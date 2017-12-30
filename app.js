@@ -96,8 +96,8 @@ function sendMessage(recipientId, message) {
 
 function respondToUser(event) {
 	var senderId = event.sender.id;
- 	var payload = event.postback.payload;
- 	sendMessage(senderId, {text: payload});
+ 	var message = event.message;
+ 	sendMessage(senderId, {text: message});
 }
 
 

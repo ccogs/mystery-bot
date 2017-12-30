@@ -9,7 +9,7 @@ app.listen((process.env.PORT || 5000));
 
 // Server index page
 app.get("/", function (req, res) {
-  res.send("Deployed!");
+  res.send("All is good!");
 });
 
 // Facebook Webhook
@@ -24,7 +24,8 @@ app.get("/webhook", function (req, res) {
   }
 });
 
-// All callbacks for Messenger will be POST-ed here
+// calls our helper functions
+// we care about two types: messages & postbacks
 app.post("/webhook", function (req, res) {
   // Make sure this is a page subscription
   if (req.body.object == "page") {
@@ -33,6 +34,9 @@ app.post("/webhook", function (req, res) {
     req.body.entry.forEach(function(entry) {
       // Iterate over each messaging event
       entry.messaging.forEach(function(event) {
+      	if (event.message && event.message.text) {
+            respondToUser(event);
+        }
         if (event.postback) {
           processPostback(event);
         }
@@ -43,6 +47,7 @@ app.post("/webhook", function (req, res) {
   }
 });
 
+// I found this code on a tutorial for fb messenger
 function processPostback(event) {
   var senderId = event.sender.id;
   var payload = event.postback.payload;
@@ -72,7 +77,7 @@ function processPostback(event) {
   }
 }
 
-// sends message to user
+// utility function. sends message to user
 function sendMessage(recipientId, message) {
   request({
     url: "https://graph.facebook.com/v2.6/me/messages",
@@ -88,3 +93,45 @@ function sendMessage(recipientId, message) {
     }
   });
 }
+
+function respondToUser(event) {
+	var senderId = event.sender.id;
+ 	var payload = event.postback.payload;
+ 	sendMessage(senderId, {text: payload});
+}
+
+
+
+// old code.
+//--------------
+// function sendInspirationalMessage(userID) {
+//     var token = process.env.PAGE_ACCESS_TOKEN;
+//     var url = "https://graph.facebook.com/v2.6/" + userID + "?fields=first_name&access_token=" + token;
+
+//     async.waterfall([
+//         function(callback) {
+//             var name = "";
+//             request.get(url, function (error, response, body) {
+//                 if (!error && response.statusCode == 200) {
+//                     name = JSON.parse(body).first_name;
+//                     callback(null, name);
+//                 }
+//             });
+//         },
+//         function(name, callback) {
+//             var greeting = getGreeting(name);
+//             callback(null, greeting);
+//         },
+//         function(greeting, callback) {
+//             var message = getMessage();
+//             callback(null, message, greeting);
+//         },
+//         function(message, greeting, callback) {
+//             sendMessage(userID, {text: greeting +  message });
+            
+//             callback(null);
+//         }
+//     ], function (err) {
+//         // result now equals 'done'
+//     });
+// }

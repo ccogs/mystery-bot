@@ -27,6 +27,8 @@ function entry(senderid, message, writeMessage) {
                 text: url + '\n\n' + sum
             };
             writeMessage(senderid, message);
+        }).catch(function (error) {
+            console.log(error);
         });
 
         return true;

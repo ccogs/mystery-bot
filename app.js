@@ -7,6 +7,19 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 5000));
 
+var HttpClient = function() {
+    this.get = function(aUrl, aCallback) {
+        var anHttpRequest = new XMLHttpRequest();
+        anHttpRequest.onreadystatechange = function() { 
+            if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+                aCallback(anHttpRequest.responseText);
+        }
+
+        anHttpRequest.open( "GET", aUrl, true );            
+        anHttpRequest.send( null );
+    }
+}
+
 // Server index page
 app.get("/", function (req, res) {
   res.send("All is good!");
@@ -97,42 +110,34 @@ function sendMessage(recipientId, message) {
 function respondToUser(event) {
 	var senderId = event.sender.id;
  	var message = event.message.text;
+
+  if (message === "cat") {
+    sendCatPicture(senderId);
+    return;
+  }
+
  	var text = "echoing: " + message;
  	sendMessage(senderId, {text: text});
 }
 
+function sendCatPicture(senderId) {
+  var catUrl = "http://thecatapi.com/api/images/get?format=xml&api_key=" 
+    + process.env.CAT_KEY;
 
+  var client = new HttpClient();
+  client.get(catUrl, function(response) {
+      var responseUrl = response.data.images.image.url;
+      var message = {
+        attachment: {
+          type: "image",
+          payload: {
+            url: responseUrl,
+            is_reusable: true
+          }
+        }
+      };
 
-// old code.
-//--------------
-// function sendInspirationalMessage(userID) {
-//     var token = process.env.PAGE_ACCESS_TOKEN;
-//     var url = "https://graph.facebook.com/v2.6/" + userID + "?fields=first_name&access_token=" + token;
+      sendMessage(senderId, message);
+  });
+}
 
-//     async.waterfall([
-//         function(callback) {
-//             var name = "";
-//             request.get(url, function (error, response, body) {
-//                 if (!error && response.statusCode == 200) {
-//                     name = JSON.parse(body).first_name;
-//                     callback(null, name);
-//                 }
-//             });
-//         },
-//         function(name, callback) {
-//             var greeting = getGreeting(name);
-//             callback(null, greeting);
-//         },
-//         function(greeting, callback) {
-//             var message = getMessage();
-//             callback(null, message, greeting);
-//         },
-//         function(message, greeting, callback) {
-//             sendMessage(userID, {text: greeting +  message });
-            
-//             callback(null);
-//         }
-//     ], function (err) {
-//         // result now equals 'done'
-//     });
-// }

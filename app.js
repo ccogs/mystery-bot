@@ -10,8 +10,6 @@ app.use(bodyParser.json());
 app.listen((process.env.PORT || 5000));
 
 
-console.log('The news Summarizer is');
-console.log(newsSummarizer);
 
 /*
 A list of response modules that will allow additional functionality to be added on.
@@ -137,8 +135,6 @@ function respondToUser(event) {
     return;
   }
   for (let entry of responseModules) {
-        console.log('the entry is');
-        console.log(entry);
         if (entry(senderId, message, sendMessage)){
           return;
         }

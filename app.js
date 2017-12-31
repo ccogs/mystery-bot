@@ -97,7 +97,8 @@ function sendMessage(recipientId, message) {
 function respondToUser(event) {
 	var senderId = event.sender.id;
  	var message = event.message.text;
- 	sendMessage(senderId, {text: message});
+ 	var text = "echoing: " + message;
+ 	sendMessage(senderId, {text: text});
 }
 
 

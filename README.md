@@ -8,4 +8,4 @@ Collaboration:
 
 * Pushing to the master branch will automatically build & integrate it into the bot. 
 
-You can message it at [m.me/justalittlebot](http://m.me/justalittlebot). 
+You can message it at [m.me/justalittlebot](http://m.me/justalittlebot)

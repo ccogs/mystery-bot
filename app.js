@@ -136,7 +136,8 @@ function respondToUser(event) {
     sendCatPicture(senderId);
     return;
   }
-  for (const entry in responseModules) {
+  for (let entry of responseModules) {
+        console.log('the entry is');
         console.log(entry);
         if (entry(senderId, message, sendMessage)){
           return;

@@ -134,6 +134,7 @@ function respondToUser(event) {
     return;
   }
   for (const entry in responseModules) {
+        console.log(entry);
         if (entry(senderId, message, sendMessage)){
           return;
         }

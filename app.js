@@ -2,11 +2,25 @@ var express = require("express");
 var request = require("request");
 var bodyParser = require("body-parser");
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+let newsSummarizer = require('news_summarizer');
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 5000));
+
+
+/*
+A list of response modules that will allow additional functionality to be added on.
+The entry functions take the following parameters:
+1.) The submission id
+2.) The message sent
+3.) The function to write a response message:
+      parameters:
+        1.) submission id (TODO just make it take the sumission id on the function binding)
+        2.) The message to respond.
+ */
+let responseModules = [newsSummarizer.entry];
 
 
 
@@ -118,6 +132,11 @@ function respondToUser(event) {
   if (message === "cat") {
     sendCatPicture(senderId);
     return;
+  }
+  for (const entry in responseModules) {
+        if (entry(senderId, message, sendMessage)){
+          return;
+        }
   }
 
  	var text = "echoing: " + message;

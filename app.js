@@ -14,7 +14,6 @@ function firstEntity(nlp, name) {
   return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
 }
 
-
 // Server index page
 app.get("/", function (req, res) {
   res.send("All is good!");
@@ -106,9 +105,12 @@ function respondToUser(event) {
 	var senderId = event.sender.id;
  	var message = event.message.text;
 
-  const greeting = firstEntity(event.message.nlp, 'greeting');
+  console.log("nlp: " + event.message.nlp);
+  const greeting = firstEntity(event.message.nlp, 'greetings');
+  console.log(greeting);
   if (greeting && greeting.confidence > 0.8) {
-    var text = 'Detected greeting. Hi there!'
+    console.log("Identified greeting.");
+    var text = 'Detected greeting. Hi there!';
     sendMessage(senderId, {text: text});
     return;
   }
@@ -123,18 +125,18 @@ function respondToUser(event) {
 }
 
 function sendCatPicture(senderId) {
-  var catUrl = "http://thecatapi.com/api/images/get?format=src&api_key=" 
-    + process.env.CAT_KEY;
-
+  console.log("Identified cat request.");
+  var catUrl = "http://thecatapi.com/api/images/get?format=src";
+  
   var message = {
-        attachment: {
-          type: "image",
-          payload: {
-            url: catUrl,
-            is_reusable: true
-          }
-        }
-      };
+    attachment: {
+      type: "image",
+      payload: {
+        url: catUrl,
+        is_reusable: true
+      }
+    }
+  };
 
   sendMessage(senderId, message);
 }

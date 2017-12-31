@@ -8,6 +8,13 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 5000));
 
+
+
+function firstEntity(nlp, name) {
+  return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
+}
+
+
 // Server index page
 app.get("/", function (req, res) {
   res.send("All is good!");
@@ -98,6 +105,11 @@ function sendMessage(recipientId, message) {
 function respondToUser(event) {
 	var senderId = event.sender.id;
  	var message = event.message.text;
+
+  const greeting = firstEntity(message.nlp, 'greeting');
+  if (greeting && greeting.confidence > 0.8) {
+    sendResponse('Detected greeting. Hi there!');
+  }
 
   if (message === "cat") {
     sendCatPicture(senderId);

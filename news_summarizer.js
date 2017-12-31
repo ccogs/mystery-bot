@@ -22,11 +22,13 @@ function _lookupRandomArticle() {
 function entry(senderid, message, writeMessage) {
     if (message === 'news') {
         let url = _lookupRandomArticle();
-        let sum = _getSummaryFromUrl(url);
-        message = {
-            text: url + '\n\n' + sum
-        };
-        writeMessage(senderid, message);
+        _getSummaryFromUrl(url).then(function(sum){
+            message = {
+                text: url + '\n\n' + sum
+            };
+            writeMessage(senderid, message);
+        });
+
         return true;
     }
     return false;

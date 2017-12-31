@@ -18,9 +18,7 @@ function _getSummaryFromUrl(url) {
 function _lookupRandomArticle() {
     // TODO make non random hardcoded URL
     return 'https://www.nytimes.com/2017/12/29/dining/raw-water-unfiltered.html';
-};
-
-
+}
 function entry(senderid, message, writeMessage) {
     if (message === 'news') {
         let url = _lookupRandomArticle();

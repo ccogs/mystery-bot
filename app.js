@@ -10,6 +10,9 @@ app.use(bodyParser.json());
 app.listen((process.env.PORT || 5000));
 
 
+console.log('The news Summarizer is');
+console.log(newsSummarizer);
+
 /*
 A list of response modules that will allow additional functionality to be added on.
 The entry functions take the following parameters:

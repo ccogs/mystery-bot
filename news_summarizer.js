@@ -16,21 +16,39 @@ function _getSummaryFromUrl(url) {
 };
 
 function _lookupRandomArticle() {
-    // TODO make non random hardcoded URL
-    return 'https://www.nytimes.com/2017/12/29/dining/raw-water-unfiltered.html';
+    function randomInt (low, high) {
+        return Math.floor(Math.random() * (high - low) + low);
+    }
+    let today = new Date();
+    let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    let url = 'https://newsapi.org/v2/everything?' +
+        'from=' + date + '&'+
+        'sortBy=popularity&' +
+        'apiKey=' + process.env.NEWS_API_TOKEN;
+    let req =  new Request(url);
+    return fetch(req)
+        .then(function(response) {
+            let results = response.articles;
+            let len = results.length;
+            if (len === 0){
+                return "https://www.lipsum.com/"
+            }
+            return results[randomInt(0, len)].url
+        });
 }
 function entry(senderid, message, writeMessage) {
     if (message === 'news') {
-        let url = _lookupRandomArticle();
-        _getSummaryFromUrl(url).then(function(sum){
-            message = {
-                text: url + '\n\n' + sum
-            };
-            writeMessage(senderid, message);
-        }).catch(function (error) {
-            console.log(error);
+        _lookupRandomArticle().then(
+        function (url) {
+            _getSummaryFromUrl(url).then(function (sum) {
+                message = {
+                    text: url + '\n\n' + sum
+                };
+                writeMessage(senderid, message);
+            }).catch(function (error) {
+                console.log(error);
+            });
         });
-
         return true;
     }
     return false;

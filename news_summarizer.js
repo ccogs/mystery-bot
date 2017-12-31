@@ -1,4 +1,8 @@
-//let summary = require('node-summary');
+require('babel-node-modules')([
+    'node-summary' // add an array of module names here
+]);
+let summary = require('node-summary');
+
 
 
 let _getSummaryFromUrl = function (url) {

@@ -159,4 +159,3 @@ function sendCatPicture(senderId) {
 
   sendMessage(senderId, message);
 }
-

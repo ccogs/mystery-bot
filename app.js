@@ -2,7 +2,7 @@ var express = require("express");
 var request = require("request");
 var bodyParser = require("body-parser");
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-let newsSummarizer = require('news_summarizer');
+let newsSummarizer = require('./news_summarizer');
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));

@@ -8,19 +8,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 5000));
 
-var HttpClient = function() {
-    this.get = function(aUrl, aCallback) {
-        var anHttpRequest = new XMLHttpRequest();
-        anHttpRequest.onreadystatechange = function() { 
-            if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
-                aCallback(anHttpRequest.responseText);
-        }
-
-        anHttpRequest.open( "GET", aUrl, true );            
-        anHttpRequest.send( null );
-    }
-}
-
 // Server index page
 app.get("/", function (req, res) {
   res.send("All is good!");
@@ -124,23 +111,6 @@ function respondToUser(event) {
 function sendCatPicture(senderId) {
   var catUrl = "http://thecatapi.com/api/images/get?format=src&api_key=" 
     + process.env.CAT_KEY;
-
-  // var client = new HttpClient();
-  // client.get(catUrl, function(response) {
-  //     console.log(response);
-  //     var responseUrl = response.data.images.image.url;
-  //     var message = {
-  //       attachment: {
-  //         type: "image",
-  //         payload: {
-  //           url: responseUrl,
-  //           is_reusable: true
-  //         }
-  //       }
-  //     };
-
-  //     sendMessage(senderId, message);
-  //});
 
   var message = {
         attachment: {

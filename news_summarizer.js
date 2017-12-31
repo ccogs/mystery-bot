@@ -9,7 +9,7 @@ function _getSummaryFromUrl(url) {
     // convert summary.summarizeFromUrl to use promises instead of a callback
     return new Promise(function (resolve, reject) {
         summary.summarizeFromUrl(url, function (err, data) {
-            if (err !== null) return reject(err);
+            if (err) return reject(err);
             resolve(data);
         });
     });

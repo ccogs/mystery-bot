@@ -122,24 +122,36 @@ function respondToUser(event) {
 }
 
 function sendCatPicture(senderId) {
-  var catUrl = "http://thecatapi.com/api/images/get?format=xml&api_key=" 
+  var catUrl = "http://thecatapi.com/api/images/get?format=src&api_key=" 
     + process.env.CAT_KEY;
 
-  var client = new HttpClient();
-  client.get(catUrl, function(response) {
-      console.log(response);
-      var responseUrl = response.data.images.image.url;
-      var message = {
+  // var client = new HttpClient();
+  // client.get(catUrl, function(response) {
+  //     console.log(response);
+  //     var responseUrl = response.data.images.image.url;
+  //     var message = {
+  //       attachment: {
+  //         type: "image",
+  //         payload: {
+  //           url: responseUrl,
+  //           is_reusable: true
+  //         }
+  //       }
+  //     };
+
+  //     sendMessage(senderId, message);
+  //});
+
+  var message = {
         attachment: {
           type: "image",
           payload: {
-            url: responseUrl,
+            url: catUrl,
             is_reusable: true
           }
         }
       };
 
-      sendMessage(senderId, message);
-  });
+  sendMessage(senderId, message);
 }
 

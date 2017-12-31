@@ -127,6 +127,7 @@ function sendCatPicture(senderId) {
 
   var client = new HttpClient();
   client.get(catUrl, function(response) {
+      console.log(response);
       var responseUrl = response.data.images.image.url;
       var message = {
         attachment: {

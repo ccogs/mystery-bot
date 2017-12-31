@@ -20,7 +20,7 @@ The entry functions take the following parameters:
         1.) submission id (TODO just make it take the sumission id on the function binding)
         2.) The message to respond.
  */
-let responseModules = [newsSummarizer.entry];
+let responseModules = [newsSummarizer];
 
 
 

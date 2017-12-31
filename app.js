@@ -1,6 +1,7 @@
 var express = require("express");
 var request = require("request");
 var bodyParser = require("body-parser");
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));

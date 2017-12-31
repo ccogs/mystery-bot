@@ -19,9 +19,7 @@
     "node-summary": "^1.2.0",
     "request": "^2.83.0",
     "xmlhttprequest": "^1.8.0",
-    "babel-cli": "^6.26.0"
-  },
-  "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-node-modules": "0.0.1"
   }
 }

@@ -3,6 +3,7 @@ require('babel-node-modules')([
     'node-summary' // add an array of module names here
 ]);
 let summary = require('node-summary');
+let requestPromise = require("request-promise");
 
 
 function _getSummaryFromUrl(url) {
@@ -21,12 +22,16 @@ function _lookupRandomArticle() {
     }
     let today = new Date();
     let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    let url = 'https://newsapi.org/v2/everything?' +
-        'from=' + date + '&'+
-        'sortBy=popularity&' +
-        'apiKey=' + process.env.NEWS_API_TOKEN;
-    let req =  new Request(url);
-    return fetch(req)
+    let options = {
+        uri: 'https://newsapi.org/v2/everything',
+        qs: {
+            apiKey: process.env.NEWS_API_TOKEN,
+            from: date
+        },
+        json: true // Automatically parses the JSON string in the response
+    };
+    let req =  new requestPromise(options);
+    return req
         .then(function(response) {
             let results = response.articles;
             let len = results.length;

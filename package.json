@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-node-modules": "0.0.1",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "body-parser": "^1.18.2",
@@ -18,8 +20,7 @@
     "mongoose": "^5.0.0-rc0",
     "node-summary": "^1.2.0",
     "request": "^2.83.0",
-    "xmlhttprequest": "^1.8.0",
-    "babel-cli": "^6.26.0",
-    "babel-node-modules": "0.0.1"
+    "request-promise": "^4.2.2",
+    "xmlhttprequest": "^1.8.0"
   }
 }

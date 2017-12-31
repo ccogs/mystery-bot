@@ -26,7 +26,8 @@ function _lookupRandomArticle() {
         uri: 'https://newsapi.org/v2/everything',
         qs: {
             apiKey: process.env.NEWS_API_TOKEN,
-            from: date
+            from: date,
+            sources: 'bloomberg,bbc-news,google-news,hacker-news,reuters,the-hill,time,the-washington-post,abc-news,cnn'
         },
         json: true // Automatically parses the JSON string in the response
     };

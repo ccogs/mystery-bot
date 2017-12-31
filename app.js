@@ -106,6 +106,8 @@ function respondToUser(event) {
 	var senderId = event.sender.id;
  	var message = event.message.text;
 
+  console.log(event);
+
   const greeting = firstEntity(event.message.nlp, 'greeting');
   if (greeting && greeting.confidence > 0.8) {
     sendResponse('Detected greeting. Hi there!');

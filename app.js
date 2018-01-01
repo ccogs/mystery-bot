@@ -13,7 +13,7 @@ app.listen((process.env.PORT || 5000));
 /*
 A list of BotHooks that will be queried on each request.
  */
-let responseModules = [newsSummarizer()];
+let responseModules = [new newsSummarizer()];
 
 
 function firstEntity(nlp, name) {

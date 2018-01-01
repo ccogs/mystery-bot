@@ -2,8 +2,11 @@ var express = require("express");
 var request = require("request");
 var bodyParser = require("body-parser");
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+
+// Importing of BotHook Modules
 let newsSummarizer = require('./news_summarizer');
 let catPicture = require('./cat_pictures');
+let echoHook = require('./echo_module');
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
@@ -14,7 +17,7 @@ app.listen((process.env.PORT || 5000));
 /*
 A list of BotHooks that will be queried on each request.
  */
-let responseModules = [new catPicture(),new newsSummarizer()];
+let responseModules = [new catPicture(),new newsSummarizer(), new echoHook()];
 
 
 function firstEntity(nlp, name) {
@@ -133,7 +136,4 @@ function respondToUser(event) {
             }
         }
     }
-
-    var text = "echoing: " + message;
-    sendMessage(senderId, {text: text});
 }

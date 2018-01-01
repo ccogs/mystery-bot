@@ -1,9 +1,12 @@
-// This is requires because the author of node-summary did not correctly
+'use strict';
+// This is required because the author of node-summary did not correctly
+// make it transpiled from es6
 require('babel-node-modules')([
     'node-summary' // add an array of module names here
 ]);
 let summary = require('node-summary');
 let requestPromise = require("request-promise");
+let BotHook = require('./bot_module');
 
 
 function _getSummaryFromUrl(url) {
@@ -42,22 +45,42 @@ function _lookupRandomArticle() {
             return results[randomInt(0, len)].url
         });
 }
-function entry(senderid, message, writeMessage) {
-    if (message === 'news') {
+class SummaryHook extends BotHook
+{
+    /*
+    Queries the bot to determine if the event should be handled by this hook.
+    Param:
+        event: The event object from the facebook api
+        message: event.message.text from the same event
+     Returns true if this hook should be called, false otherwise.
+     */
+    handlesMessage(event, message){
+        return message === "news"
+    }
+
+    /*
+    Tells the bot to send their response given the event and message.
+    This will only be called when handlesMessage returns true.
+    Param:
+        event: The event object form the facebook api
+        requestMessage: event.message.text from the request event
+        writeCallback: The callback that should be passed the response object as a parameter.
+     Returns true if the processing should stop, false otherwise.
+     */
+    respond(event, requestMessage, writeCallback){
         _lookupRandomArticle().then(
-        function (url) {
-            _getSummaryFromUrl(url).then(function (sum) {
-                message = {
-                    text: url + '\n\n' + sum
-                };
-                writeMessage(senderid, message);
-            }).catch(function (error) {
-                console.log(error);
+            function (url) {
+                _getSummaryFromUrl(url).then(function (sum) {
+                    let message = {
+                        text: url + '\n\n' + sum
+                    };
+                    writeCallback(message);
+                }).catch(function (error) {
+                    console.log(error);
+                });
             });
-        });
         return true;
     }
-    return false;
 }
 
-module.exports = entry;
+module.exports = SummaryHook;

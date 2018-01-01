@@ -34,7 +34,8 @@ class CatHook extends BotHook {
                 }
             }
         };
-        writeCallback(message)
+        writeCallback(message);
+        return true;
     }
 }
 

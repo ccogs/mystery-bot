@@ -1,6 +1,6 @@
 'use strict';
 
-export default class BotHook {
+class BotHook {
     /*
     Queries the bot to determine if the event should be handled by this hook.
     Param:
@@ -25,3 +25,5 @@ export default class BotHook {
         throw new Error("respond not implemented for the base class BotHook");
     }
 }
+
+module.exports = BotHook;

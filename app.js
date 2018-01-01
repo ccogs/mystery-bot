@@ -1,14 +1,12 @@
-var express = require("express");
-var request = require("request");
-var bodyParser = require("body-parser");
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-
+const express = require("express");
+const request = require("request");
+const bodyParser = require("body-parser");
 // Importing of BotHook Modules
-let newsSummarizer = require('./news_summarizer');
-let catPicture = require('./cat_pictures');
-let echoHook = require('./echo_module');
+const newsSummarizer = require('./modules/news_summarizer');
+const catPicture = require('./modules/cat_pictures');
+const echoHook = require('./modules/echo_module');
 
-var app = express();
+const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 5000));
@@ -66,8 +64,8 @@ app.post("/webhook", function (req, res) {
 
 // I found this code on a tutorial for fb messenger
 function processPostback(event) {
-    var senderId = event.sender.id;
-    var payload = event.postback.payload;
+    let senderId = event.sender.id;
+    let payload = event.postback.payload;
 
     if (payload === "Greeting") {
         // Get user's first name from the User Profile API
@@ -80,15 +78,15 @@ function processPostback(event) {
             },
             method: "GET"
         }, function (error, response, body) {
-            var greeting = "";
+            let greeting = "";
             if (error) {
                 console.log("Error getting user's name: " + error);
             } else {
-                var bodyObj = JSON.parse(body);
+                let bodyObj = JSON.parse(body);
                 name = bodyObj.first_name;
                 greeting = "Hello Person. I see your name is: " + name + ". ";
             }
-            var message = greeting + "This is the initial message. ";
+            let message = greeting + "This is the initial message. ";
             sendMessage(senderId, {text: message});
         });
     }
@@ -112,15 +110,15 @@ function sendMessage(recipientId, message) {
 }
 
 function respondToUser(event) {
-    var senderId = event.sender.id;
-    var message = event.message.text;
+    let senderId = event.sender.id;
+    let message = event.message.text;
 
     console.log("nlp: " + event.message.nlp);
     const greeting = firstEntity(event.message.nlp, 'greetings');
     console.log(greeting);
     if (greeting && greeting.confidence > 0.8) {
         console.log("Identified greeting.");
-        var text = 'Detected greeting. Hi there!';
+        let text = 'Detected greeting. Hi there!';
         sendMessage(senderId, {text: text});
         return;
     }

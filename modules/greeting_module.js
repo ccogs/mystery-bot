@@ -1,7 +1,8 @@
 let FirstEntity = require('../utils/nlp_helpers').firstEntity;
 let BotHook = require('./bot_module');
 
-class CatHook extends BotHook {
+class GreetingHook extends BotHook
+{
     /*
     Queries the bot to determine if the event should be handled by this hook.
     Param:
@@ -9,11 +10,10 @@ class CatHook extends BotHook {
         message: event.message.text from the same event
      Returns true if this hook should be called, false otherwise.
      */
-    handlesMessage(event, message) {
-        const intent = FirstEntity(event.message.nlp, 'intent');
-        const cat = "wants_cat";
-
-        if (intent && intent.value == cat && intent.confidence > 0.8) {
+    handlesMessage(event, message){
+        const greeting = FirstEntity(event.message.nlp, 'greetings');
+        if (greeting && greeting.confidence > 0.8) {
+            console.log("Identified greeting.");
             return true;
         }
         return false;
@@ -28,22 +28,11 @@ class CatHook extends BotHook {
         writeCallback: The callback that should be passed the response object as a parameter.
      Returns true if the processing should stop, false otherwise.
      */
-    respond(event, requestMessage, writeCallback) {
-        console.log("Identified cat request.");
-        const catUrl = "http://thecatapi.com/api/images/get?format=src";
-
-        const message = {
-            attachment: {
-                type: "image",
-                payload: {
-                    url: catUrl,
-                    is_reusable: true
-                }
-            }
-        };
-        writeCallback(message);
+    respond(event, requestMessage, writeCallback){
+        let text = 'Detected greeting. Hi there!';
+        writeCallback({text: text});
         return true;
     }
 }
 
-module.exports = CatHook;
+module.exports = GreetingHook;

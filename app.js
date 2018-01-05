@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const newsSummarizer = require('./modules/news_summarizer');
 const catPicture = require('./modules/cat_pictures');
 const echoHook = require('./modules/echo_module');
+const greetingHook = require('./modules/greeting_module');
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
@@ -15,12 +16,9 @@ app.listen((process.env.PORT || 5000));
 /*
 A list of BotHooks that will be queried on each request.
  */
-let responseModules = [new catPicture(),new newsSummarizer(), new echoHook()];
+let responseModules = [new greetingHook(), new catPicture(),
+    new newsSummarizer(), new echoHook()];
 
-
-function firstEntity(nlp, name) {
-    return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
-}
 
 // Server index page
 app.get("/", function (req, res) {
@@ -113,15 +111,8 @@ function respondToUser(event) {
     let senderId = event.sender.id;
     let message = event.message.text;
 
-    console.log("nlp: " + event.message.nlp);
-    const greeting = firstEntity(event.message.nlp, 'greetings');
-    console.log(greeting);
-    if (greeting && greeting.confidence > 0.8) {
-        console.log("Identified greeting.");
-        let text = 'Detected greeting. Hi there!';
-        sendMessage(senderId, {text: text});
-        return;
-    }
+    let str = JSON.stringify(event.message.nlp, null, 4);
+    console.log("nlp: " + str);
 
     let respond = function (message) {
         sendMessage(senderId, message);

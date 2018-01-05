@@ -1,4 +1,4 @@
-let FirstEntity = require('../nlp_helpers').firstEntity;
+let FirstEntity = require('../utils/nlp_helpers').firstEntity;
 let BotHook = require('./bot_module');
 
 class CatHook extends BotHook {

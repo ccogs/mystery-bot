@@ -6,6 +6,7 @@ require('babel-node-modules')([
 ]);
 let summary = require('node-summary');
 let requestPromise = require("request-promise");
+let FirstEntity = require('../utils/nlp_helpers').firstEntity;
 let BotHook = require('./bot_module');
 
 
@@ -55,7 +56,13 @@ class SummaryHook extends BotHook
      Returns true if this hook should be called, false otherwise.
      */
     handlesMessage(event, message){
-        return message === "news"
+        const intent = FirstEntity(event.message.nlp, 'intent');
+        const news = "wants_news";
+
+        if (intent && intent.value == news && intent.confidence > 0.8) {
+            return true;
+        }
+        return false;
     }
 
     /*

@@ -1,3 +1,4 @@
+let FirstEntity = require('../nlp_helpers').firstEntity;
 let BotHook = require('./bot_module');
 
 class CatHook extends BotHook {
@@ -9,7 +10,11 @@ class CatHook extends BotHook {
      Returns true if this hook should be called, false otherwise.
      */
     handlesMessage(event, message) {
-        return message === "cat"
+        const cat = FirstEntity(event.message.nlp, 'cat');
+        if (cat && cat.confidence > 0.8) {
+            return true;
+        }
+        return false;
     }
 
     /*

@@ -10,8 +10,9 @@ class CatHook extends BotHook {
      Returns true if this hook should be called, false otherwise.
      */
     handlesMessage(event, message) {
-        const cat = FirstEntity(event.message.nlp, 'cat');
-        if (cat && cat.confidence > 0.8) {
+        const intent = FirstEntity(event.message.nlp, 'intent');
+        const cat = "wants_cat";
+        if (intent == cat  && intent.confidence > 0.8) {
             return true;
         }
         return false;

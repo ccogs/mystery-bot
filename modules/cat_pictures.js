@@ -13,7 +13,7 @@ class CatHook extends BotHook {
         const intent = FirstEntity(event.message.nlp, 'intent');
         const cat = "wants_cat";
 
-        if (intent.value == cat && intent.confidence > 0.8) {
+        if (intent && intent.value == cat && intent.confidence > 0.8) {
             return true;
         }
         return false;

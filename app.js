@@ -111,7 +111,8 @@ function respondToUser(event) {
     let senderId = event.sender.id;
     let message = event.message.text;
 
-    console.log("nlp: " + event.message.nlp);
+    let str = JSON.stringify(event.message.nlp, null, 4);
+    console.log("nlp: " + str);
 
     let respond = function (message) {
         sendMessage(senderId, message);

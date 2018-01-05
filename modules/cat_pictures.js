@@ -12,6 +12,10 @@ class CatHook extends BotHook {
     handlesMessage(event, message) {
         const intent = FirstEntity(event.message.nlp, 'intent');
         const cat = "wants_cat";
+
+        let str = JSON.stringify(intent, null, 4);
+        console.log("intent: " + str);
+        
         if (intent == cat  && intent.confidence > 0.8) {
             return true;
         }
